@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Mysql的EXPLAIN</title>
+    <url>/2021/02/19/Mysql%E7%9A%84EXPLAIN%E5%92%8Csql%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<h3 id="EXPLAIN中的列"><a href="#EXPLAIN中的列" class="headerlink" title="EXPLAIN中的列"></a>EXPLAIN中的列</h3><p>id(列的编号)</p>
+<p>select_type(对应的行是简单还是复杂查询)<br>    SUBQUERY<br>        不在from子句中的自查询<br>    DERIVED<br>        在from子句中的查询<br>    UNION<br>        在union中的第二个和随后的select查询<br>    UNION RESULT<br>        从union的匿名临时表检索结果的select</p>
+<p>table(对应行在访问哪个表)</p>
+<p>type(关联类型)<br>    ALL<br>        全表扫描<br>    index<br>        全表扫描，只是按照索引次序进行而不是行，避免了排序，缺点是承担按照索引次序读取整个表的开销，如果Extra列显示useing index 则说明在使用覆盖索引，只扫描索引的数据，开销要小很多<br>    range<br>        有限制的索引扫描，范围扫描数据<br>    ref<br>        索引查找，返回所有匹配某个单个值的行，但是可能会找到多个符合条件的行，当使用非唯一索引，或唯一索引的非唯一性前缀才会发生<br>    eq_ref<br>        使用索引或唯一索引<br>    const,system<br>        使用常量的时候，例如将某一行的主键放入where子句中的方式来选取此行的主键<br>    NULL<br>        用不着访问表或者索引</p>
+<p>possiable_keys(可以使用哪些索引)</p>
+<p>key(使用了哪个索引，如果没有出现在possiable_keys中，可能使用了覆盖索引)</p>
+<p>key_len（索引字节数，索引字段中可能的最大长度，而不是实际的）</p>
+<p>ref（展示了之前的表在key列表记录的索引）</p>
+<p>rows（找到所需行而要读取的行数）</p>
+<p>extra<br>    Using index<br>        Mysql使用覆盖索引<br>    Using where<br>        存储引擎检索行后过滤，暗示查询受益于不同的索引<br>    Using temporary<br>        对查询结果排序时使用临时表<br>    Using filesort<br>        对结果进行外部索引排序，而不是按索引次序从表中读<br>    Range checked for each record(index map: N)<br>        没有很好的使用索引，新的索引将在连接的每一行上重新估算，N是显示在possiable_keys中的索引的位图，并且都是冗余的</p>
+<p>filtered（表里符合条件的记录数的百分比做的悲观估算）</p>
+]]></content>
+      <categories>
+        <category>mysql</category>
+      </categories>
+      <tags>
+        <tag>mysql</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>@Autowired原理</title>
     <url>/2021/01/14/@Autowired%E5%8E%9F%E7%90%86/</url>
     <content><![CDATA[<blockquote>
@@ -34,28 +56,6 @@
       </categories>
       <tags>
         <tag>SpringBoot</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Mysql的EXPLAIN</title>
-    <url>/2021/02/19/Mysql%E7%9A%84EXPLAIN%E5%92%8Csql%E4%BC%98%E5%8C%96/</url>
-    <content><![CDATA[<h3 id="EXPLAIN中的列"><a href="#EXPLAIN中的列" class="headerlink" title="EXPLAIN中的列"></a>EXPLAIN中的列</h3><p>id(列的编号)</p>
-<p>select_type(对应的行是简单还是复杂查询)<br>    SUBQUERY<br>        不在from子句中的自查询<br>    DERIVED<br>        在from子句中的查询<br>    UNION<br>        在union中的第二个和随后的select查询<br>    UNION RESULT<br>        从union的匿名临时表检索结果的select</p>
-<p>table(对应行在访问哪个表)</p>
-<p>type(关联类型)<br>    ALL<br>        全表扫描<br>    index<br>        全表扫描，只是按照索引次序进行而不是行，避免了排序，缺点是承担按照索引次序读取整个表的开销，如果Extra列显示useing index 则说明在使用覆盖索引，只扫描索引的数据，开销要小很多<br>    range<br>        有限制的索引扫描，范围扫描数据<br>    ref<br>        索引查找，返回所有匹配某个单个值的行，但是可能会找到多个符合条件的行，当使用非唯一索引，或唯一索引的非唯一性前缀才会发生<br>    eq_ref<br>        使用索引或唯一索引<br>    const,system<br>        使用常量的时候，例如将某一行的主键放入where子句中的方式来选取此行的主键<br>    NULL<br>        用不着访问表或者索引</p>
-<p>possiable_keys(可以使用哪些索引)</p>
-<p>key(使用了哪个索引，如果没有出现在possiable_keys中，可能使用了覆盖索引)</p>
-<p>key_len（索引字节数，索引字段中可能的最大长度，而不是实际的）</p>
-<p>ref（展示了之前的表在key列表记录的索引）</p>
-<p>rows（找到所需行而要读取的行数）</p>
-<p>extra<br>    Using index<br>        Mysql使用覆盖索引<br>    Using where<br>        存储引擎检索行后过滤，暗示查询受益于不同的索引<br>    Using temporary<br>        对查询结果排序时使用临时表<br>    Using filesort<br>        对结果进行外部索引排序，而不是按索引次序从表中读<br>    Range checked for each record(index map: N)<br>        没有很好的使用索引，新的索引将在连接的每一行上重新估算，N是显示在possiable_keys中的索引的位图，并且都是冗余的</p>
-<p>filtered（表里符合条件的记录数的百分比做的悲观估算）</p>
-]]></content>
-      <categories>
-        <category>mysql</category>
-      </categories>
-      <tags>
-        <tag>mysql</tag>
       </tags>
   </entry>
   <entry>
